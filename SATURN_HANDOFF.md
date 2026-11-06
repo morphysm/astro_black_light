@@ -58,3 +58,10 @@ The interactive browser flow and PDF print dialog were not tested in the recent 
 6. Verify the public hosting state, deploy the intended synchronized copy, and test the live URL. Do not assume a ZIP update publishes the site.
 
 A small public beta is reasonable once these checks pass and unresolved limitations are clearly stated. Broader launch readiness depends on the findings, not on a fixed testing period.
+
+## Changelog
+
+- 5 Nov 2026: Added `saturn/NARRATIVE_DRAFT.md` (proposed de-Christianised, unsoftened copy). Not yet applied to code; tests unaffected.
+- 5 Nov 2026: Built `saturn-v2/` (v1 in `saturn/` untouched). Applied the narrative draft, removed Christian references, added the House of Death (Saturn at 90/180/270/360° from natal Saturn, three cycles), brutalist restyle with bundled Oswald font, and UI fixes (emoji glyphs, floating sound box, hidden fields, selected state, mobile menu). Tests: `node --test tests/saturn-v2.test.cjs` (9 pass). Browser walkthrough done in Chrome at desktop and phone width. Not deployed; `saturn-site/` and the ZIP still hold v1.
+- 6 Nov 2026: saturn-v2: House of Death epigraphs now drawn per chart from pools (`epigraphPools`, `houseEpigraphs` in core.js); door shows its own epigraph; new test; Method note updated. Tests 10/10.
+- 6 Nov 2026: saturn-v2 narrative v0.3 — texts moved to `saturn-v2/narrative.js` (loaded before core.js). Decans per sign, 2 seeded variants per natal text, 1 per event text; heavier aspects/motion/returns. Tests 11/11.

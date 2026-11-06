@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="A Saturn-centered astrological reading, built from calculated chart factors.">
+  <title>SATURN v2 — A reading under one planet</title>
+  <link rel="icon" href="assets/saturnian_sigil.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="vendor/astronomy.js"></script>
+  <script defer src="narrative.js"></script>
+  <script defer src="core.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="wordmark" href="./" aria-label="SATURN home">SATURN<span class="wordmark-dot">♄</span></a>
+    <div class="header-right">
+      <span class="edition">A CALCULATED READING · V2</span>
+      <div class="sound-controls" role="group" aria-label="Ambient sound controls">
+        <audio id="ambient-audio" src="assets/saturn-drone.ogg" loop preload="none"></audio>
+        <button id="sound-toggle" class="quiet-button" type="button" aria-pressed="false" aria-label="Turn ambient sound on">Sound off</button>
+        <input id="sound-volume" type="range" min="0" max="0.12" step="0.005" value="0.025" aria-label="Ambient sound volume">
+      </div>
+      <button id="method-button" class="quiet-button" type="button">Method</button>
+    </div>
+  </header>
+  <main id="main" tabindex="-1"></main>
+  <details class="saturn-history">
+    <summary>Archive · a short history of Saturn</summary>
+    <div class="history-body">
+      <p class="history-intro">One planet, several traditions. These accounts describe mythology, worship and occult symbolism in their own settings.</p>
+      <h3>Mesopotamia · the distant sovereign</h3>
+      <p>Babylonian astronomers observed Saturn as Kayyāmānu, the slow-moving celestial wanderer. Associated with Ninurta, a deity of warfare and agriculture, the planet belonged to a system of celestial omens concerning kingship and earthly affairs. <a href="https://www.iranicaonline.org/articles/planets/" target="_blank" rel="noopener">Encyclopaedia Iranica ↗</a> · <a href="https://sumerianastrology.com/wp-content/uploads/2024/08/Mesopotamian-Planetary-Astronomy-Astrology-Brown-Mesopotamian-Astrology.pdf" target="_blank" rel="noopener">David Brown, Mesopotamian Planetary Astronomy-Astrology ↗</a></p>
+      <h3>Greece and later European art · the devouring father</h3>
+      <p>The Romans identified Saturn with Greek Kronos, the father who swallowed his children to prevent his overthrow. Later art connected this figure with time. That association developed across traditions; Kronos and Chronos, the personification of time, should not simply be treated as identical. <a href="https://www.getty.edu/art/collection/object/103RQE" target="_blank" rel="noopener">Getty ↗</a></p>
+      <h3>Phoenicia and Carthage · the sacrificial god</h3>
+      <p>Greek and Roman writers identified Kronos and Saturn with deities including El and Baal Hammon. Ancient accounts associated these cults with sacrificial offerings, including historically debated traditions of child sacrifice. <a href="https://www.philipharland.com/Blog/2024/05/phoenician-perspectives-philo-of-byblos-second-century-ce/" target="_blank" rel="noopener">Philo of Byblos, translated by Philip A. Harland ↗</a> · <a href="https://www.ox.ac.uk/news/2014-01-23-ancient-carthaginians-really-did-sacrifice-their-children" target="_blank" rel="noopener">University of Oxford ↗</a></p>
+      <h3>Rome · the seed</h3>
+      <p>Roman Saturn, rooted in older Italic tradition, was a god of sowing and seed. The Romans identified him with the Greek agricultural deity Kronos. <a href="https://www.getty.edu/cona/CONAIconographyRecord.aspx?iconid=901000195" target="_blank" rel="noopener">Getty ↗</a></p>
+      <h3>Hindu traditions · Shani</h3>
+      <p>Saturn is personified as Shani, one of the nine planetary deities, the navagrahas. Devotion to these deities includes seeking protection from misfortune. Here Saturn belongs to a living religious tradition. <a href="https://art.thewalters.org/object/25.39/" target="_blank" rel="noopener">Walters Art Museum ↗</a></p>
+      <h3>Renaissance European occultism · lead and solitude</h3>
+      <p>Agrippa associated Saturn with lead, heavy materials and solitary creatures. These correspondences give its occult image weight, darkness and withdrawal. They belong to a historical system of planetary symbolism. <a href="https://renaissanceastrology.com/agrippasaturn.html" target="_blank" rel="noopener">Agrippa, Book I, “What things are Saturnine” ↗</a></p>
+      <h3>Morphysm · a contemporary interpretation</h3>
+      <p>At Saturn’s north pole, a six-sided pattern takes shape in the planet’s atmosphere: a stable shape formed by motion.</p>
+      <p>Morphysm uses this as an image for the self: a process that looks like an object, a standing wave in neural flow, mistaken for an entity. Matter passes through it, and the illusion persists. <a href="https://www.reddit.com/r/BreakingMirrors/" target="_blank" rel="noopener">Breaking Mirrors on Reddit ↗</a></p>
+    </div>
+  </details>
+  <footer class="site-footer">
+    <span>A MORPHYSTIC INTERPRETATION</span>
+    <span>TIME · LIMIT · FORM</span>
+  </footer>
+
+
+  <dialog id="method-dialog" aria-labelledby="method-title">
+    <div class="dialog-top">
+      <span class="overline">CALCULATION &amp; EDITORIAL METHOD</span>
+      <button class="quiet-button" type="button" data-close="method-dialog">Close</button>
+    </div>
+    <h2 id="method-title">A calculated sky.<br>A written reading.</h2>
+    <p>Planetary positions are calculated in this browser with Astronomy Engine. The prototype uses the tropical zodiac and apparent geocentric ecliptic longitude. Saturn is the subject; other planets are interpreted only when a calculated aspect involves Saturn.</p>
+    <p>Aspect definitions: conjunction 0° / 7° orb; sextile 60° / 4°; square 90° / 6°; trine 120° / 6°; opposition 180° / 7°. Only factors supported across the full sampled time interval are interpreted. Approximate and unknown times use 97 samples. The sign, motion and aspect checks are sampled, not a continuous mathematical proof.</p>
+    <p>Houses, ascendant, angles and general transits are not implemented. Saturn Returns is a provisional calculation: up to three return cycles are found by solving when transiting Saturn reaches the chart’s natal Saturn longitude. It includes retrograde re-crossings and sampled input-time sensitivity. Independent reference comparison is pending. The wheel shows the zodiac and Saturn’s calculated position; its rings are chart guides, not orbits. A midpoint marker is identified whenever the entered time is uncertain.</p>
+    <p>The House of Death appears after the reading ends. Its four rooms are the dates on which transiting Saturn reaches 90°, 180°, 270° and 360° from the chart’s Saturn, solved with the same method as the returns.</p>
+    <p>All sign, aspect, return and House of Death texts are original editorial writing (draft v0.3) and have not yet been reviewed against a source corpus or by an astrologer.</p>
+    <p>Chart inputs remain in this page’s memory unless you choose Save chart. Saved chart details stay in this browser on this device and are not sent to a server. Clearing browser data can remove them. The optional place search sends only the place query to Open-Meteo’s geocoding service, which uses GeoNames data. Calculation and reading work without that search when a built-in place is selected.</p>
+    <p>Time-zone resolution uses the browser’s Intl time-zone database. Its version is not pinned, and historical results still need independent comparison. Review the selected place, local time, time zone and daylight-saving occurrence before calculating.</p>
+    <p class="source-line">Calculation library: <a href="https://github.com/cosinekitty/astronomy" target="_blank" rel="noopener">Astronomy Engine (MIT) ↗</a>. Placement-specific source review is pending.</p>
+  </dialog>
+  <noscript>This application needs JavaScript to calculate and display a chart. No chart details are sent to a language model.</noscript>
+</body>
+</html>
