@@ -292,13 +292,22 @@
     opposition: 'Saturn faces {theme} across a strip of mined ground. Each side watches the other through the wire.'
   };
 
+  // Saturn with no major aspect: the isolated planet.
+  const unaspected = {
+    natal: [
+      'Saturn stands alone. No other planet reaches it: no visitor, no letter, no voice through the wall. The weight is carried in a sealed room.',
+      'No planet answers Saturn. It turns in its cell without contact, and the silence around it is total. What it builds, it builds unwitnessed.'
+    ],
+    event: 'No planet touches Saturn in this chart. The project carries its weight alone, in a sealed room.'
+  };
+
   const returnAudits = [
     'The first audit. The inherited walls are knocked on one by one; the hollow ones are marked for demolition.',
     'The second audit. Everything built since the first is loaded until it groans. What cracks is taken down.',
     'The third audit. The inspector is old, and so is the building. What remains is what the years could not carry off.'
   ];
 
-  const api = { natal, event, motionLines, planetThemes, planetImages, eventPlanetImages, aspectLanguage, returnAudits };
+  const api = { natal, event, unaspected, motionLines, planetThemes, planetImages, eventPlanetImages, aspectLanguage, returnAudits };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   root.SaturnNarrative = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

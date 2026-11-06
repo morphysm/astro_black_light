@@ -504,7 +504,7 @@
     const motionText = saturn.motion === 'uncertain' ? 'Motion changes during the interval' : saturn.motion === 'retrograde' ? 'Retrograde' : saturn.motion === 'stationary' ? 'Near station' : 'Direct';
     const aspectMarkup = reading.aspects.length
       ? reading.aspects.map(aspect => `<article class="aspect-card"><div class="aspect-card-head"><span>${esc(aspect.body)} ${esc(aspect.name)} Saturn</span><span>${aspect.orb.toFixed(2)}° orb</span></div><p>${esc(aspect.text)}</p><p class="factor-id">${esc(aspect.id)} · ${aspect.angle.toFixed(2)}° separation · ${aspect.limit}° limit</p></article>`).join('')
-      : `<p class="quiet-note">${esc(reading.aspectNote)}</p>`;
+      : `<article class="aspect-card aspect-card-alone"><div class="aspect-card-head"><span>Saturn unaspected</span><span>no contact</span></div><p>${esc(reading.unaspected)}</p></article>`;
     const uncertaintyMarkup = reading.uncertainAspects.length
       ? `<div class="uncertainty-panel"><h3>Factors that change across the interval</h3><p>These possible Saturn aspects do not persist through every sampled time, so they are not used in the reading.</p><ul>${reading.uncertainAspects.map(item => `<li>${esc(item.body)}${item.possible.length ? ` · ${esc(item.possible.join(' / '))} possible` : ''}</li>`).join('')}</ul></div>`
       : '';

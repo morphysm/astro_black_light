@@ -142,3 +142,14 @@ test('natal readings use the decan and a stable per-chart variant', () => {
   assert.ok(variants.size > 1, 'different charts with the same Saturn can read differently');
   assert.equal(C.decanOf(9.99), 0); assert.equal(C.decanOf(10), 1); assert.equal(C.decanOf(293.33), 2);
 });
+
+test('a chart with no Saturn aspects gets the unaspected reading once', () => {
+  const N = require('../saturn-v2/narrative.js');
+  const chart = C.calculate({ ...base, date: '1966-06-01' }, astronomy);
+  assert.equal(chart.aspects.length, 0);
+  const reading = C.reading(chart);
+  assert.ok(N.unaspected.natal.includes(reading.unaspected));
+  assert.match(reading.aspectNote, /No planet/);
+  assert.equal(C.reading(C.calculate(base, astronomy)).unaspected, '');
+  assert.equal(C.reading(C.calculate({ ...base, date: '1966-06-01', type: 'event' }, astronomy)).unaspected, N.unaspected.event);
+});

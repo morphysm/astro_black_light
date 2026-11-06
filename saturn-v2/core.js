@@ -313,8 +313,9 @@
       endurance: prose ? prose.endurance : 'Unknown data stays unknown. Narrow the time range only if there is a reliable basis for it.',
       aspects,
       aspectNote: aspects.length
-        ? 'Only Saturn aspects that stay inside the stated orb at every sampled time are read.'
-        : 'No Saturn aspect met the defined orb at every sampled time.',
+        ? (chart.input.precision === 'exact' ? 'Major aspects to Saturn within the set orbs.' : 'Only Saturn aspects that stay inside the set orb at every sampled time are read.')
+        : (chart.input.precision === 'exact' ? 'No planet is within the set orb of a major aspect to Saturn.' : 'No planet stays within the set orb of a major aspect to Saturn across the whole time range.'),
+      unaspected: aspects.length ? '' : (event ? N.unaspected.event : N.unaspected.natal[seededRandom(chartSeed(chart) ^ 0x0A5E17)() < 0.5 ? 0 : 1]),
       uncertainAspects: chart.uncertainAspects,
       uncertainty: unstableNote,
       returnAudits,
