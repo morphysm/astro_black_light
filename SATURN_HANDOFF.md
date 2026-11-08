@@ -67,3 +67,4 @@ A small public beta is reasonable once these checks pass and unresolved limitati
 - 6 Nov 2026: saturn-v2 narrative v0.3 — texts moved to `saturn-v2/narrative.js` (loaded before core.js). Decans per sign, 2 seeded variants per natal text, 1 per event text; heavier aspects/motion/returns. Tests 11/11.
 - 6 Nov 2026: saturn-site/dist and saturn-public.zip replaced with v2 runtime files (not deployed). Source committed on branch `saturn-v2` (3b02c22).
 - 6 Nov 2026: 05 / Contact — duplicated "no aspect" line removed; unaspected Saturn now gets its own text (narrative.js `unaspected`). Tests 12/12. Zip rebuilt.
+- 8 Nov 2026: saturn-v2: View saved charts opens a dialog over the chart instead of resetting it; Open chart and Start another chart warn when the chart on screen is not saved. Tests 15/15. saturn-site/dist synced, zip rebuilt (not deployed).

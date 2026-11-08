@@ -27,11 +27,17 @@ Tests: `node --test tests/saturn-v2.test.cjs` (from the workspace root).
 
 Calculation code (chart, aspects, returns) is unchanged apart from a configurable search window used by the House of Death.
 
+## Changelog
+
+- 8 Nov 2026: **View saved charts** on the chart page now opens a dialog over the chart. It used to return to the entrance screen, which cleared the current chart. Deleting a saved chart now updates the list in place.
+- 8 Nov 2026: **Open chart** in that dialog now warns first if the chart on screen is not saved, because opening another chart replaces it.
+- 8 Nov 2026: **Start another chart** now gives the same warning when the chart on screen is not saved.
+
 ## Limits
 
 - All texts are original editorial drafts; no astrologer or source review yet.
 - House of Death dates use the same provisional method as the returns; they have not been compared with an independent ephemeris. They are symbols, not predictions.
-- `saturn-site/dist/` and `saturn-public.zip` still hold v1. Nothing was deployed.
+- `saturn-site/dist/` and `saturn-public.zip` hold v2, including the 8 Nov 2026 chart-warning fixes. Nothing was deployed.
 - Save chart and Save as PDF were not re-tested in v2 (code unchanged except the PDF copy now leaves out the door).
 
 ## Revision — House of Death texts (5 Nov 2026)

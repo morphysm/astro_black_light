@@ -70,6 +70,20 @@
     <p>Time-zone resolution uses the browser’s Intl time-zone database. Its version is not pinned, and historical results still need independent comparison. Review the selected place, local time, time zone and daylight-saving occurrence before calculating.</p>
     <p class="source-line">Calculation library: <a href="https://github.com/cosinekitty/astronomy" target="_blank" rel="noopener">Astronomy Engine (MIT) ↗</a>. Placement-specific source review is pending.</p>
   </dialog>
+  <dialog id="saved-charts-dialog" aria-label="Saved charts">
+    <div class="dialog-top">
+      <span class="overline">THIS BROWSER · THIS DEVICE</span>
+      <button class="quiet-button" type="button" data-close="saved-charts-dialog">Close</button>
+    </div>
+    <section id="saved-charts-list" class="saved-charts"></section>
+  </dialog>
+  <dialog id="new-chart-dialog" aria-labelledby="new-chart-warning">
+    <p id="new-chart-warning">The chart on screen is not saved. Starting another chart will replace it, and its details will be lost.</p>
+    <div class="saved-chart-actions">
+      <button id="confirm-new-chart" class="outline-button" type="button">Start anyway</button>
+      <button class="quiet-button" type="button" data-close="new-chart-dialog" autofocus>Keep current chart</button>
+    </div>
+  </dialog>
   <noscript>This application needs JavaScript to calculate and display a chart. No chart details are sent to a language model.</noscript>
 </body>
 </html>

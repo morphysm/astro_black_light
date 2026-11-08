@@ -153,3 +153,25 @@ test('a chart with no Saturn aspects gets the unaspected reading once', () => {
   assert.equal(C.reading(C.calculate(base, astronomy)).unaspected, '');
   assert.equal(C.reading(C.calculate({ ...base, date: '1966-06-01', type: 'event' }, astronomy)).unaspected, N.unaspected.event);
 });
+
+test('View saved charts opens a dialog and does not reset the current chart', () => {
+  const read = file => require('node:fs').readFileSync(require('node:path').join(__dirname, '../saturn-v2', file), 'utf8');
+  const app = read('app.js');
+  assert.match(app, /'#view-saved-charts'\)\.addEventListener\('click', showSavedChartsDialog\)/);
+  assert.match(read('index.html'), /id="saved-charts-dialog"/);
+  const dialogFn = app.slice(app.indexOf('function showSavedChartsDialog'), app.indexOf('function enter()'));
+  assert.doesNotMatch(dialogFn, /chart = null|enter\(\)|setScreen/);
+});
+
+test('opening a saved chart warns before replacing an unsaved chart', () => {
+  const app = require('node:fs').readFileSync(require('node:path').join(__dirname, '../saturn-v2/app.js'), 'utf8');
+  const warnAt = app.indexOf("!open.hasAttribute('data-confirmed') && !isCurrentChartIn(current)");
+  const replaceAt = app.indexOf('chart = C.calculate(input, window.Astronomy);', app.indexOf('function renderSavedCharts'));
+  assert.ok(warnAt > 0 && warnAt < replaceAt, 'warning check must run before the chart is replaced');
+});
+
+test('Start another chart goes through the unsaved-chart check', () => {
+  const read = file => require('node:fs').readFileSync(require('node:path').join(__dirname, '../saturn-v2', file), 'utf8');
+  assert.match(read('app.js'), /'#new-chart'\)\.addEventListener\('click', startAnotherChart\)/);
+  assert.match(read('index.html'), /id="new-chart-dialog"/);
+});

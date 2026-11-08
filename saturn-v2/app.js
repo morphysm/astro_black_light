@@ -59,11 +59,24 @@
     return records;
   }
 
+  const isCurrentChartIn = records => records.some(record => JSON.stringify(record) === JSON.stringify(chart.input));
+
+  function startAnotherChart() {
+    let saved = false;
+    try {
+      saved = isCurrentChartIn(readSavedCharts());
+    } catch (error) {
+      // Storage is unreadable, so the chart cannot be confirmed as saved: warn.
+    }
+    if (saved) inputScreen();
+    else document.getElementById('new-chart-dialog').showModal();
+  }
+
   function saveChart() {
     const status = $('#save-status');
     try {
       const records = readSavedCharts();
-      if (!records.some(record => JSON.stringify(record) === JSON.stringify(chart.input))) {
+      if (!isCurrentChartIn(records)) {
         records.push(chart.input);
         localStorage.setItem(savedChartsKey, JSON.stringify(records));
       }
@@ -94,13 +107,15 @@
     }
   }
 
-  function renderSavedCharts() {
-    const host = $('#saved-charts');
+  function renderSavedCharts(host, emptyHtml = '') {
     try {
       const records = readSavedCharts();
-      if (!records.length) return;
-      host.innerHTML = `<h2>Saved charts</h2><p>Stored in this browser on this device. Opening a chart recalculates it.</p><div class="saved-chart-list">${records.map((record, index) => `<div class="saved-chart-row"><div><strong>${esc(record.name || (record.type === 'event' ? 'Event / project chart' : 'Birth chart'))}</strong><p>${esc(record.date)} · ${esc(record.place)}</p></div><div class="saved-chart-actions"><button type="button" class="outline-button" data-open-chart="${index}">Open chart</button><button type="button" class="quiet-button" data-delete-chart="${index}" aria-label="Delete ${esc(record.name || 'chart')} ${esc(record.date)}">Delete</button></div></div>`).join('')}</div><p id="saved-chart-status" class="error-message" role="status"></p>`;
-      host.addEventListener('click', event => {
+      if (!records.length) {
+        host.innerHTML = emptyHtml;
+        return;
+      }
+      host.innerHTML = `<h2>Saved charts</h2><p>Stored in this browser on this device. Opening a chart recalculates it.</p><div class="saved-chart-list">${records.map((record, index) => `<div class="saved-chart-row"><div><strong>${esc(record.name || (record.type === 'event' ? 'Event / project chart' : 'Birth chart'))}</strong><p>${esc(record.date)} · ${esc(record.place)}</p></div><div class="saved-chart-actions"><button type="button" class="outline-button" data-open-chart="${index}">Open chart</button><button type="button" class="quiet-button" data-delete-chart="${index}" aria-label="Delete ${esc(record.name || 'chart')} ${esc(record.date)}">Delete</button></div></div>`).join('')}</div><div id="saved-chart-warning" class="saved-chart-warning" role="alert"></div><p id="saved-chart-status" class="error-message" role="status"></p>`;
+      host.onclick = event => {
         const open = event.target.closest('[data-open-chart]');
         const remove = event.target.closest('[data-delete-chart]');
         try {
@@ -108,20 +123,34 @@
           if (open) {
             const input = current[Number(open.dataset.openChart)];
             if (!input || !window.Astronomy) throw new Error('This chart could not be opened.');
+            if (chart && !open.hasAttribute('data-confirmed') && !isCurrentChartIn(current)) {
+              const warning = host.querySelector('#saved-chart-warning');
+              warning.innerHTML = `<p>The chart on screen is not saved. Opening ${esc(input.name || 'this chart')} will replace it, and its details will be lost.</p><div class="saved-chart-actions"><button type="button" class="outline-button" data-open-chart="${esc(open.dataset.openChart)}" data-confirmed>Open anyway</button><button type="button" class="quiet-button" data-keep-chart>Keep current chart</button></div>`;
+              warning.querySelector('[data-keep-chart]').focus();
+              return;
+            }
             chart = C.calculate(input, window.Astronomy);
+            host.closest('dialog')?.close();
             resultsScreen();
           } else if (remove) {
             current.splice(Number(remove.dataset.deleteChart), 1);
             localStorage.setItem(savedChartsKey, JSON.stringify(current));
-            enter();
+            renderSavedCharts(host, emptyHtml);
+          } else if (event.target.closest('[data-keep-chart]')) {
+            host.querySelector('#saved-chart-warning').innerHTML = '';
           }
         } catch (error) {
-          $('#saved-chart-status').textContent = error.message || 'The saved chart could not be accessed.';
+          host.querySelector('#saved-chart-status').textContent = error.message || 'The saved chart could not be accessed.';
         }
-      });
+      };
     } catch (error) {
       host.innerHTML = '<p class="error-message" role="status">Saved charts could not be accessed in this browser.</p>';
     }
+  }
+
+  function showSavedChartsDialog() {
+    renderSavedCharts(document.getElementById('saved-charts-list'), '<h2>Saved charts</h2><p>No charts saved in this browser yet.</p>');
+    document.getElementById('saved-charts-dialog').showModal();
   }
 
   function enter() {
@@ -161,7 +190,7 @@
       </section>
     `);
     $('#enter-reading').addEventListener('click', inputScreen);
-    renderSavedCharts();
+    renderSavedCharts($('#saved-charts'));
   }
 
   function inputScreen(resetPlace = true) {
@@ -585,10 +614,10 @@
       </div>
       <p class="reading-status"><span class="status-dot" aria-hidden="true"></span>${esc(reading.status)}</p>
     `);
-    $('#new-chart').addEventListener('click', inputScreen);
+    $('#new-chart').addEventListener('click', startAnotherChart);
     $('#save-chart').addEventListener('click', saveChart);
     $('#print-chart').addEventListener('click', printChart);
-    $('#view-saved-charts').addEventListener('click', enter);
+    $('#view-saved-charts').addEventListener('click', showSavedChartsDialog);
     $('#calculate-returns').addEventListener('click', () => {
       const button = $('#calculate-returns');
       const host = $('#returns-output');
@@ -896,6 +925,10 @@
   });
 
   document.getElementById('method-button').addEventListener('click', () => document.getElementById('method-dialog').showModal());
-  document.querySelectorAll('[data-close="method-dialog"]').forEach(button => button.addEventListener('click', () => document.getElementById('method-dialog').close()));
+  document.querySelectorAll('[data-close]').forEach(button => button.addEventListener('click', () => document.getElementById(button.dataset.close).close()));
+  document.getElementById('confirm-new-chart').addEventListener('click', () => {
+    document.getElementById('new-chart-dialog').close();
+    inputScreen();
+  });
   enter();
 })();
